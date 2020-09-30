@@ -14,9 +14,8 @@
   
   - Medium Impact
     - No rate limit.
-  
-  - Low Impact
     - Information disclosure.
+
     
 ## Date
 A pentest aduit was performed for the **SECURITY BRIGADE** at **Wednesday, 30 September 2020**. 
@@ -179,7 +178,7 @@ Uploaded data shloud have a proper file/extension/mime declared before passing i
 ##### No rate limit.
 It was found that their is not rate limit implementation were in place at **http://foophones.securitybrigade.com:8080/login.php** which could lead to account takeover via brute force.
 
-Request (Brute for attempt) =>
+Request (Brute force attempt) =>
 ```
 POST /login.php HTTP/1.1
 Host: foophones.securitybrigade.com:8080
@@ -259,3 +258,11 @@ Content-Type: text/html
 
 <font color=red>Username exists</font>
 ```
+- Recommendation: Having a google captcha can fix this issue.
+
+#####  Information disclosure
+It was found that **/logs.txt** and **/logs** where exposed at **http://foophones.securitybrigade.com:8080** which contains response for backedn servers
+
+This infomation can lead to a an issue if it contains critical informations.
+
+- Recommendation: It best to not make this ciritcal endpoints public or having a proper 403 Forbidden access can fix it too.
