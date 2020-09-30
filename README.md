@@ -8,7 +8,7 @@
 - Vulnerabilites
   
   - Critical Impact
-    - RCE.
+   - RCE.
  
  - High Impact
     - Buying anything!
