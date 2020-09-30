@@ -30,7 +30,7 @@ Vulnerabilites founded are listed according to their impact levels, explanations
 ### High Impact
 
 ##### Buying anything!
-I was found that an attacker can buy anything from **http://foophones.securitybrigade.com:8080/buy_confirm.php** regardless of what amount of credit is availabe in his/her account. By manipulating the buying request as 
+It was found that an attacker can buy anything from **http://foophones.securitybrigade.com:8080/buy_confirm.php** regardless of what amount of credit is availabe in his/her account. By manipulating the buying request as 
 
 Request => 
 ```
@@ -65,4 +65,7 @@ Response (interesting part only!) =>
 
 Filling account !
 ```
+- Recommendation
+  User supplied data shloud be propelry checked before sending it to backend.
+
 
