@@ -107,7 +107,7 @@ font color=green>Thank you for your purchase! The product will be shipped to : c
 		<p>&copy;&nbsp;Copyright 2009. Security Brigade </p>
 	</div>
 ```
-- Acttacker's account after buying and fillup up credit.
+- Attacker's account after buying and fillup up credit.
   ![Alt Text](https://i.ibb.co/NTPKp7B/screencapture-foophones-securitybrigade-8080-myaccount-php-2020-09-30-00-34-25.png)
 
 - Recommendation:
@@ -115,7 +115,7 @@ font color=green>Thank you for your purchase! The product will be shipped to : c
   
 ##### RCE
 It was found that the upload functionality located at Register page is vulnerable to rce.
-Note: For the sake of poc ony phpinfo file was called from the backend as it's tends to be a customer based aduit.
+Note: For the sake of poc only phpinfo file was called from the backend as it's tends to be a customer based audit.
 
 - Request => 
 ```
@@ -166,17 +166,17 @@ Content-Type: application/octet-stream
 **http://foophones.securitybrigade.com:8080/images/avatars/shell.php**
 
 
-The atttack was successful as there was not restrictions in extentions and what data type was allowed.
+The attack was successful as there was no restrictions in extentions and what data type was allowed.
 ![Alt Text](https://i.ibb.co/k57x6LJ/screencapture-foophones-securitybrigade-8080-images-avatars-shell-php-2020-09-30-01-00-52.png)
 
 - Recommendation:
-Uploaded data shloud have a proper file/extension/mime declared before passing it to the database.
+Uploaded data should have a proper file/extension/mime declared before passing it to the database.
 
 
 ### High Impact
 
 ##### No rate limit.
-It was found that their is not rate limit implementation were in place at **http://foophones.securitybrigade.com:8080/login.php** which could lead to account takeover via brute force.
+It was found that there is not rate limit implementation were in place at **http://foophones.securitybrigade.com:8080/login.php** which could lead to account takeover via brute force.
 
 Request (Brute force attempt) =>
 ```
@@ -227,7 +227,7 @@ Content-Length: 0
 Connection: close
 Content-Type: text/html
 ```
-which now contains a redirection for ** myaccount.php** endpoint
+Which now contains a redirection for ** myaccount.php** endpoint.
 
 Attacker just need to know the usernames which could be enumerated from register section as it tends to show if  username exists or not. Like,
 
@@ -261,8 +261,8 @@ Content-Type: text/html
 - Recommendation: Having a google captcha can fix this issue.
 
 #####  Information disclosure
-It was found that **/logs.txt** and **/logs** where exposed at **http://foophones.securitybrigade.com:8080** which contains response for backedn servers
+It was found that **/logs.txt** and **/logs** where exposed at **http://foophones.securitybrigade.com:8080/logs**  and **http://foophones.securitybrigade.com:8080/logs.txt** which contains response for backend servers
 
 This infomation can lead to a an issue if it contains critical informations.
 
-- Recommendation: It best to not make this ciritcal endpoints public or having a proper 403 Forbidden access can fix it too.
+- Recommendation: It best  not make this ciritcal endpoints public or having a proper 403 forbidden access in place can fix it too.
