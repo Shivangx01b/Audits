@@ -378,7 +378,10 @@ It best  not make these endpoints public or having a proper 403 forbidden access
 ##### No rate limit leading to account takeover.
 It was found that there is not rate limit implementation were in place at **http://foophones.securitybrigade.com:8080/login.php** which could lead to account takeover via brute force.
 
-Request (Brute force attempt) =>
+###### Steps To Reproduce: 
+1) Visit **http://foophones.securitybrigade.com:8080/login.php** and try to fill creds and intercept the request in burp,
+
+- Request =>
 ```
 POST /login.php HTTP/1.1
 Host: foophones.securitybrigade.com:8080
@@ -395,9 +398,9 @@ Accept-Language: en-US,en;q=0.9
 Cookie: _ga=GA1.2.1263643996.1601440842; _gid=GA1.2.13543791.1601440842; PHPSESSID=vc0cbm4jegj5m05cceg2l72k01
 Connection: close
 
-user=shivang&pass=qwerty1234
+user=attacker&pass=password
 ```
-
+2) Should get response like (If it's invalid creds set)
 Response => 
 ```
 HTTP/1.1 302 Found
@@ -410,26 +413,28 @@ Content-Length: 0
 Connection: close
 Content-Type: text/html
 ```
+![Alt Text](https://i.ibb.co/Gp4m1mD/invalid-login.png)
 
-Attacker could request above requets as many times without being rate limited util he/she get's a response like,
+3) Now send the request to Intruder in burp and config it like these,
 
-```
-HTTP/1.1 302 Found
-Date: Wed, 30 Sep 2020 08:52:58 GMT
-Server: Apache/2.2.22 (Ubuntu)
-X-Powered-By: PHP/5.3.10-1ubuntu3.26
-Expires: Thu, 19 Nov 1981 08:52:00 GMT
-Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0
-Pragma: no-cache
-Location: myaccount.php
-Vary: Accept-Encoding
-Content-Length: 0
-Connection: close
-Content-Type: text/html
-```
+- Add position 
+![Alt Text](https://i.ibb.co/jDBJcRB/intruder1.png)
+
+- Select wordlist
+![Alt Text](https://i.ibb.co/QCYV5C0/intruder2.png)
+
+- Set threads and grep response
+![Alt Text](https://i.ibb.co/pyF1H0h/intruder3.png)
+
+- Star the attack and then filter which greped in reponse
+![Alt Text](https://i.ibb.co/52J7wqZ/intruder4.png)
+
+5) Now enter the valid creds and login
+![Alt Text](https://i.ibb.co/L8RVGSk/valid-login.png)
+
 Which now contains a redirection for ** myaccount.php** endpoint.
 
-Attacker just need to know the usernames which could be enumerated from register section as it tends to show if  username exists or not. Like,
+6) Attacker just need to know the usernames which could be enumerated from register section as it tends to show if  username exists or not. Like,
 
 - Request =>
 ```
@@ -458,4 +463,10 @@ Content-Type: text/html
 
 <font color=red>Username exists</font>
 ```
-- Recommendation: Having a google captcha can fix this issue.
+7) Which says if username is availabe in web app or not
+
+###### Impact:
+Attacker can takeover user's account
+
+###### Recommendation: 
+Having a google captcha can fix this issue while login.
