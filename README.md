@@ -24,7 +24,7 @@
 
     
 ## Date
-A pentest aduit was performed for the **SECURITY BRIGADE** at **Wednesday, 30 September 2020**. 
+A pentest aduit was performed for the **SECURITY BRIGADE** at **Thursday, 1 October 2020**
 
 ## Scope
 Scope was limited to: **http://foophones.securitybrigade.com:8080/**
