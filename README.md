@@ -12,7 +12,7 @@
     - Blind sql leading to db dump.
  
  - High Impact
-    - Buying anything at any price .
+    - Buying anything at any price.
     - Filling Up account balance as integers are your friends.
     
   
@@ -239,7 +239,7 @@ Have a waf or sanitize user input before sending it to db
 
 ### High Impact
 
-##### Buying anything!
+##### Buying anything at any price.
 It was found that an attacker can buy anything from **http://foophones.securitybrigade.com:8080/buy_confirm.php** regardless of what amount of credit is availabe in his/her account
 
 ###### Steps To Reproduce: 
@@ -304,9 +304,12 @@ Attacker can buy anything at any price.
 ###### Recommendation:
   User supplied data shloud be propelry checked before sending it to backend.
 
-##### Filling Up account balance.
-It was found that the same above attack senerio could be used by an attacker to fill his/her account. By manipulating the buying request as.
+##### Filling up account balance as integers are your friends.
+It was found that the same above attack senerio could be used by an attacker to fill his/her account. By manipulating the price parameter using negatives.
 
+###### Steps To Reproduce: 
+
+1)Try to buy any product like **http://foophones.securitybrigade.com:8080/buy.php?id=1** and click on purchase and intercept the request in burp 
 - Request => 
 ```
 POST /buy_confirm.php HTTP/1.1
@@ -324,9 +327,9 @@ Accept-Language: en-US,en;q=0.9
 Cookie: _ga=GA1.2.1263643996.1601440842; _gid=GA1.2.13543791.1601440842; PHPSESSID=vc0cbm4jegj5m05cceg2l72k01
 Connection: close
 
-shipping=chekc&price=-1000&id=5
+shipping=chekc&price=29&id=5
 ```
-Note: Price parameter is changed from it's original value to -1000.
+2) Change the price parameter present in body section to any negative value like -1000 and send the request.
 
 - Response (interesting part only!) =>
 ```
@@ -344,25 +347,35 @@ font color=green>Thank you for your purchase! The product will be shipped to : c
 		<p>&copy;&nbsp;Copyright 2009. Security Brigade </p>
 	</div>
 ```
-- Attacker's account after buying and fillup up credit.
-  ![Alt Text](https://i.ibb.co/NTPKp7B/screencapture-foophones-securitybrigade-8080-myaccount-php-2020-09-30-00-34-25.png)
+![Alt Text](https://i.ibb.co/NTPKp7B/screencapture-foophones-securitybrigade-8080-myaccount-php-2020-09-30-00-34-25.png)
 
-- Recommendation:
-  Backend code shloud not accept negative values.
+###### Impact:
+Attacker can fill his credit without any limitations
+
+###### Recommendation:
+ Backend code shloud handel the intergers carefully.
   
 ### Medium Impact
 
-#####  Information disclosure
-It was found that **/logs.txt** and **/logs** where exposed at **http://foophones.securitybrigade.com:8080/logs**  and **http://foophones.securitybrigade.com:8080/logs.txt** which contains response for backend servers
+##### Information disclosure via logs.
+It was found that **/logs.txt** and **/logs** where exposed at **http://foophones.securitybrigade.com:8080/logs**  or **http://foophones.securitybrigade.com:8080/logs.txt** which contains response for backend servers
 
+###### Steps To Reproduce: 
+1) Just visit **http://foophones.securitybrigade.com:8080/logs**  or **http://foophones.securitybrigade.com:8080/logs.txt** 
+
+2) Should get something like,
+![Alt Text](https://i.ibb.co/PWzj17q/logs.png)
+
+###### Impact:
 This infomation can lead to a an issue if it contains critical informations.
 
-- Recommendation: It best  not make this ciritcal endpoints public or having a proper 403 forbidden access in place can fix it too.
+###### Recommendation: 
+It best  not make these endpoints public or having a proper 403 forbidden access in place can fix it too.
 
 
 ### Low Impact
 
-##### No rate limit.
+##### No rate limit leading to account takeover.
 It was found that there is not rate limit implementation were in place at **http://foophones.securitybrigade.com:8080/login.php** which could lead to account takeover via brute force.
 
 Request (Brute force attempt) =>
