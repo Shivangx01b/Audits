@@ -413,24 +413,24 @@ Content-Length: 0
 Connection: close
 Content-Type: text/html
 ```
-![Alt Text](https://i.ibb.co/Gp4m1mD/invalid-login.png)
+   ![Alt Text](https://i.ibb.co/Gp4m1mD/invalid-login.png)
 
 3) Now send the request to Intruder in burp and config it like these,
 
 - Add position 
-![Alt Text](https://i.ibb.co/jDBJcRB/intruder1.png)
+   ![Alt Text](https://i.ibb.co/jDBJcRB/intruder1.png)
 
 - Select wordlist
-![Alt Text](https://i.ibb.co/QCYV5C0/intruder2.png)
+   ![Alt Text](https://i.ibb.co/QCYV5C0/intruder2.png)
 
 - Set threads and grep response
-![Alt Text](https://i.ibb.co/pyF1H0h/intruder3.png)
+   ![Alt Text](https://i.ibb.co/pyF1H0h/intruder3.png)
 
-- Star the attack and then filter which greped in reponse
-![Alt Text](https://i.ibb.co/52J7wqZ/intruder4.png)
+- Star the attack and then filter which greped in reponse.
+   ![Alt Text](https://i.ibb.co/52J7wqZ/intruder4.png)
 
 5) Now enter the valid creds and login
-![Alt Text](https://i.ibb.co/L8RVGSk/valid-login.png)
+   ![Alt Text](https://i.ibb.co/L8RVGSk/valid-login.png)
 
 Which now contains a redirection for ** myaccount.php** endpoint.
 
