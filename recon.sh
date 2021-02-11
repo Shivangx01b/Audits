@@ -40,6 +40,8 @@ installations() {
 	go get -u -v github.com/projectdiscovery/shuffledns/cmd/shuffledns
 
 	go get -u -v github.com/projectdiscovery/subfinder/v2/cmd/subfinder
+	
+	go get -u -v github.com/lukasikic/subzy
 
 
 
