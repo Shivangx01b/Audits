@@ -1,0 +1,1 @@
+sudo  nsfminer -P stratums://0x597313cD942Eaf900Fcc8009a208cd0b97627EBc@asia1.ethermine.org:5555 -U | tee /home/ubuntu/cuda.txt
