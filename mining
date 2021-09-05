@@ -2,6 +2,8 @@ sudo  nsfminer -P stratums://0x597313cD942Eaf900Fcc8009a208cd0b97627EBc@asia1.et
 
 sudo /home/ubuntu/1.31/lolMiner --algo ETHASH --pool asia1.ethermine.org:4444 --user 0x3f0D839c60baefa47d54f8C4a9ae66307dA20e49 | tee /home/ubuntu/cuda.txt
 
+#riya
+sudo /home/ubuntu/1.31/lolMiner --algo ETHASH --pool asia1.ethermine.org:4444 --user 0x950476d0c423Cf939F3E750C6461017fa6cf5247 | tee /home/ubuntu/cuda.txt
 sudo apt-get update
 sudo apt-get install -y freeglut3-dev libx11-dev libxmu-dev libxi-dev libgl1-mesa-glx libglu1-mesa libglu1-mesa-dev gcc make libcurl4-openssl-dev autoconf git screen libncurses5-dev opencl-headers build-essential protobuf-compiler libprotoc-dev libboost-all-dev libleveldb-dev hdf5-tools libhdf5-serial-dev libopencv-core-dev libopencv-highgui-dev libsnappy-dev libsnappy1v5 libatlas-base-dev cmake libstdc++6-8-dbg libgoogle-glog0v5 libgoogle-glog-dev libgflags-dev liblmdb-dev gfortran libjansson-dev uthash-dev autogen libtool pkg-config
 sudo wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/cuda-ubuntu1804.pin
