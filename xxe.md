@@ -54,3 +54,10 @@ As shown above I created an external entity to grab the data in the “/etc/pass
  
   
 ![Alt Text](https://i.ibb.co/P1xYQF2/Capture.png)
+
+ 
+ ### Refrence
+
+- Lab Used - https://portswigger.net/web-security
+ 
+- CheatSheet - https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/XXE%20Injection
