@@ -25,7 +25,7 @@ That’s the basic structure of XML but there is a little more you should know. 
 <test><name>&user;</name></test>
 ```
 
-As shown above there is something called an ENTITY. This acts a variable. In this example the entity ```user``` holds the text ```Shivang```. This entity can be called by typing ```&user;``` and it will be replaced by the text ```Ghostlulz```.
+As shown above there is something called an ENTITY. This acts a variable. In this example the entity ```user``` holds the text ```Shivang```. This entity can be called by typing ```&user;``` and it will be replaced by the text ```Shivang```.
 
 You can also use something called an external entity which will load its data from an external source. This can be used to get contents from a URL or a file on disk as shown below:
 
@@ -43,5 +43,14 @@ While in burp I captured the following POST request which seems to be using XML 
 
 
 
+
+To test for XXE simply put in your malicious external entity and replace each node value with it as shown below:
+
+![Alt Text](https://i.ibb.co/8YjW4wK/Capture.png)
+
+
+As shown above I created an external entity to grab the data in the “/etc/passwd” file and stored it in the entity XXE. I then placed the variable in the “<productID>” node. If the server doesn’t block external entities the response will be reflected you. You will then be able to retrieve the contents of the “/etc/passwd” file as shown below:
+
+ 
   
-  
+![Alt Text](https://i.ibb.co/P1xYQF2/Capture.png)
