@@ -56,7 +56,7 @@ As shown above I created an external entity to grab the data in the “/etc/pass
 ![Alt Text](https://i.ibb.co/P1xYQF2/Capture.png)
 
  
- ### Refrence
+ ### Reference
 
 - Lab Used - https://portswigger.net/web-security
  
