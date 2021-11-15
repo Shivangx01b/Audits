@@ -14,3 +14,8 @@ In the above requests I changed the “stockApi” value to an admin directory o
 If we render the html response, we can see that we are able to access an internal admin application hosted on the target system.
 The hardest part about SSRF is proving the impact of the vulnerability. You have to find an application to exploit that would be impossible without using SSRF. If you can’t find an endpoint on the local host you can also send requests to servers on the targets internal network. If you find yourself on an application hosted on Google Cloud or other cloud providers you can try to read the metadata service to retrieve API keys and credentials.
 
+### Reference
+
+- Lab https://portswigger.net/web-security/ssrf/lab-basic-ssrf-against-localhost
+- CheatSheet https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Request%20Forgery
+
