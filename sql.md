@@ -36,6 +36,24 @@ We need to find out which column is being used to display text on the screen. To
 ![Alt Text](https://i.ibb.co/NW7Gmb3/vul.png)
 
 
+As you can see our text was outputted to the screen. This means that the second parameter is the one we want to use when extracting data from the back end database.
+The first thing we need to retrieve are the table names in the current database. The “information_schema” database is a default database which contains information on the table names, column names, and everything else in the database. In this database there is a table called “table” and this table contains a column named “table_name”. We can utilize this information to list every table in the database.
+```' union select NULL, table_name from information_schema.tables—```
 
+![Alt Text](https://i.ibb.co/fxjdnHB/sql2.png)
+
+As you can see there is a table named “users”. The next step is to determine this tables column names. Again, we can use the “information_schema” database for this.
+
+```' union select NULL, column_name from information_schema.columns where table_name = '<Table Name Here>'—```
+
+![Alt Text](https://i.ibb.co/9hB2gd1/table.png)
+
+As you can see there are two columns names password and username. The final step is to exfiltrate the data. To return the password and username in the same column I will have to use the ```concat()``` function.
+```' union select NULL, concat(<Column Name>,':',<Column Name 2>) from <Table Name>--```
+
+![Alt Text](https://i.ibb.co/Ngq8YT9/ad.png)
+
+It’s worth learning how to exploit SQL injection by hand. The vast majority of people use tools that they don’t fully understand thus limiting their capabilities. However, in the real world if you find a vulnerable endpoint it’s probably best to use a tool like SQLmap as its easier and faster.
+-  https://github.com/sqlmapproject/sqlmap
 
 
