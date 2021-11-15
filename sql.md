@@ -57,3 +57,7 @@ It’s worth learning how to exploit SQL injection by hand. The vast majority of
 -  https://github.com/sqlmapproject/sqlmap
 
 
+### Reference
+
+- Lab https://portswigger.net/web-security/all-labs
+- CheatSheet https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SQL%20Injection
