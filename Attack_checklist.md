@@ -19,3 +19,8 @@
 
 - Things covered
   - CVE checks (which nmap failed + extra high CVEs)
+  - Subdomain Takeovers
+  - Misconfiguration
+  - Exposed login panels
+  - Backup files and Exposed files hosted
+  - Vulnerabilities based on technology used (Apache, Wordpress, etc)
